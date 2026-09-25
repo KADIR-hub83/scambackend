@@ -26,14 +26,25 @@ const PORT = Number(process.env.PORT) || 5002;
 ========================================================= */
 
 app.use(helmet());
-
 app.use(
   cors({
-    origin: process.env.FRONTEND_URL || "http://localhost:3000",
-    credentials: true,
+    origin: "*",
+    methods: [
+      "GET",
+      "POST",
+      "PUT",
+      "PATCH",
+      "DELETE",
+      "OPTIONS",
+    ],
+    allowedHeaders: [
+      "Content-Type",
+      "Authorization",
+      "x-device-id",
+      "x-device-token",
+    ],
   })
 );
-
 app.use(
   express.json({
     limit: "100kb",
