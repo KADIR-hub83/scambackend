@@ -1,17 +1,41 @@
-import { Router } from "express";
+import {
+  Router,
+} from "express";
 
 import {
   getMessages,
   receiveMessage,
 } from "../controllers/message.controller.js";
 
-import { adminAuth } from "../middleware/adminAuth.js";
-import { deviceAuth } from "../middleware/deviceAuth.js";
+import {
+  adminAuth,
+} from "../middleware/adminAuth.js";
 
-const router = Router();
+import {
+  deviceAuth,
+} from "../middleware/deviceAuth.js";
 
-router.post("/receive", deviceAuth, receiveMessage);
+const router =
+  Router();
 
-router.get("/", adminAuth, getMessages);
+/* =========================================================
+   DEVICE
+========================================================= */
+
+router.post(
+  "/receive",
+  deviceAuth,
+  receiveMessage
+);
+
+/* =========================================================
+   ADMIN
+========================================================= */
+
+router.get(
+  "/",
+  adminAuth,
+  getMessages
+);
 
 export default router;
