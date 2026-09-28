@@ -4,6 +4,7 @@ import {
 
 import {
   createDevice,
+  deleteDevice,
   getDeviceById,
   getDevices,
   heartbeat,
@@ -71,6 +72,10 @@ router.post(
 router.patch(
   "/:id/revoke",
   revokeDevice,
+);
+router.delete(
+  "/:id",
+  deleteDevice,
 );
 
 export default router;

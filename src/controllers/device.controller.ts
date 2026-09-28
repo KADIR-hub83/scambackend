@@ -592,3 +592,71 @@ export const revokeDevice =
       device,
     });
   };
+
+  /* =========================================================
+   DELETE DEVICE
+========================================================= */
+
+export const deleteDevice =
+  async (
+    req: Request,
+    res: Response,
+  ) => {
+    try {
+      const device =
+        await Device.findById(
+          req.params.id,
+        );
+
+      if (!device) {
+        return res
+          .status(404)
+          .json({
+            success: false,
+            message:
+              "Device not found",
+          });
+      }
+
+      /*
+       * Delete all SMS messages belonging
+       * to this device first.
+       */
+      const messageResult =
+        await Message.deleteMany({
+          device:
+            device._id,
+        });
+
+      /*
+       * Delete the device itself.
+       */
+      await Device.deleteOne({
+        _id:
+          device._id,
+      });
+
+      return res.json({
+        success: true,
+
+        message:
+          "Device deleted successfully",
+
+        deletedMessages:
+          messageResult.deletedCount,
+      });
+    } catch (error) {
+      console.error(
+        "Delete device error:",
+        error,
+      );
+
+      return res
+        .status(500)
+        .json({
+          success: false,
+          message:
+            "Unable to delete device",
+        });
+    }
+  };
